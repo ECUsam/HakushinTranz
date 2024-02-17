@@ -4,6 +4,8 @@ import time
 onlyzimu = re.compile('[a-zA-Z]?[0-9]?_?|\.')
 
 def to_newname(name:str):
+    if isalnum(name):
+        return name
     while True:
         try:
             names = name.split()

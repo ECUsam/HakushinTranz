@@ -1,6 +1,6 @@
 class Config:
     # 游戏文件夹
-    gamePath = r"E:\download\新約迫真戦記―ほのぼの神話ver0.56"
+    gamePath = r"E:\download\新約迫真戦記―ほのぼの神話ver0.56 - 副本"
     # paratranz 下载下来的翻译文件夹，在哪层目录无所谓
     paraPath = r"E:\download\2024_02_15_14_01_03_d484c3\utf8\script"
     # 存 文件命名 对应的json

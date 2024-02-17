@@ -35,6 +35,7 @@ class translator:
         data_dic = fo.get_dict()
         self.data_dic.update(data_dic)
         save_json(data_dic, Config.dataJsonName)
+        print("文本数据保存到"+Config.dataJsonName)
         print("提取完成")
 
     def getParaData(self):
@@ -64,7 +65,7 @@ class translator:
         self.encode_change()
         self.change_name()
         self.fileFormat()
-        self.data_dic = load_json("data.json")
+        self.data_dic = load_json(Config.dataJsonName)
         self.getParaData()
         self.set_language()
         save_json(self.data_dic, Config.dataJsonName)
@@ -75,14 +76,28 @@ class translator:
         self.font_change()
 
     def just_replace(self):
-        self.data_dic = load_json("data.json")
+        self.data_dic = load_json(Config.dataJsonName)
         self.getParaData()
         if Config.use_ai_translation:
             ai_data = load_json(Config.ai_trans_file)
             self.data_dic = utils.data_update(ai_data, self.data_dic)
         self.replace()
-        self.font_change()
+
+    def output_para_data(self):
+        self.encode_change()
+        self.fileFormat()
+        utils.json_to_para(self.data_dic)
+
+    def update_output_para_data(self):
+        self.encode_change()
+        self.fileFormat()
+        self.getParaData()
+        if Config.use_ai_translation:
+            ai_data = load_json(Config.ai_trans_file)
+            self.data_dic = utils.data_update(ai_data, self.data_dic)
+        utils.json_to_para(self.data_dic)
+
 
 if __name__ == "__main__":
     a = translator()
-    a.run()
+    a.output_para_data()

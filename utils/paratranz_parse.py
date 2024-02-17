@@ -2,7 +2,9 @@ import json
 import os
 import re
 
+from config import Config
 from utils.baidutran import baidutrans
+from utils.changename import to_newname
 
 
 def filenamer(input_str):
@@ -27,6 +29,62 @@ def has_2_kana(text):
     if num >= 2:
         return True
     return False
+
+
+    # 生成网站用数据
+def json_to_para(raw_trans:dict):
+    lists = {}
+
+    for da in raw_trans:
+        file_path = raw_trans[da]['repath']
+        if file_path not in lists:
+            lists[file_path] = []
+        for i in range(len(raw_trans[da]['context'])):
+            original = raw_trans[da]['context'][i]
+            if 'iftrans' not in raw_trans[da]:
+                raw_trans[da]['iftrans'] = False
+            if raw_trans[da]['iftrans']:
+                if original not in raw_trans[da]['trans']: print(da)
+                trans = raw_trans[da]['trans'][original]
+                if has_kana(trans): trans = ''
+            else:
+                trans = ''
+            tiaomu = {
+                "key": da + '@_' + str(i) + '',
+                "original": original,
+                "translation": trans,
+                "context": '类型：' + raw_trans[da]['type'] + '.文件：' + raw_trans[da]['repath']
+            }
+
+            func = raw_trans[da]['repath']
+            my_list = lists[func]
+            my_list.append(tiaomu)
+
+    with open(Config.dataName, 'r', encoding='utf8') as f:
+        name_dict = json.load(f)["script"]
+
+    for func in lists:
+        dir_path = os.path.dirname(func)
+        file_dire = func.split('.dat')[0]
+        filename_base = os.path.basename(func).split('.dat')[0]
+        if os.path.basename(func) not in name_dict:
+            filename_new = to_newname(filename_base)
+            filename_new = filenamer(filename_new)
+            name_dict[filename_base] = filename_new
+        else:
+            filename_new = name_dict[filename_base]
+
+        print(filename_new)
+        file_dire = file_dire.replace(filename_base, filename_new)
+
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+        with open(file_dire + '.json', 'w', encoding='utf16') as f:
+            json.dump(lists[func], f, indent=4, ensure_ascii=False)
+
+    with open('name.json', 'w', encoding='utf16') as f:
+        json.dump(name_dict, f, indent=4, ensure_ascii=False)
+
 
 class paratranz:
     def __init__(self, para_path):
@@ -66,57 +124,6 @@ class paratranz:
         self.para_data = raw_data
         return raw_data
 
-    # 生成网站用数据
-    def json_to_para(self, raw_trans:dict):
-        lists = {}
-
-        for da in raw_trans:
-            file_path = raw_trans[da]['repath']
-            if file_path not in lists:
-                lists[file_path] = []
-            for i in range(len(raw_trans[da]['context'])):
-                original = raw_trans[da]['context'][i]
-                if raw_trans[da]['iftrans']:
-                    if original not in raw_trans[da]['trans']: print(da)
-                    trans = raw_trans[da]['trans'][original]
-                    if has_kana(trans): trans = ''
-                else:
-                    trans = ''
-                tiaomu = {
-                    "key": da + '@_' + str(i) + '',
-                    "original": original,
-                    "translation": trans,
-                    "context": '类型：' + raw_trans[da]['type'] + '.文件：' + raw_trans[da]['repath']
-                }
-
-                func = raw_trans[da]['repath']
-                my_list = lists[func]
-                my_list.append(tiaomu)
-
-        with open('name.json', 'r', encoding='utf16') as f:
-            name_dict = json.load(f)
-
-        for func in lists:
-            dir_path = os.path.dirname(func)
-            file_dire = func.split('.dat')[0]
-            filename_base = os.path.basename(func).split('.dat')[0]
-            if filename_base not in name_dict:
-                filename_new = baidutrans(filename_base, toLang='en')
-                filename_new = filenamer(filename_new)
-                name_dict[filename_base] = filename_new
-            else:
-                filename_new = name_dict[filename_base]
-
-            print(filename_new)
-            file_dire = file_dire.replace(filename_base, filename_new)
-
-            if not os.path.exists(dir_path):
-                os.makedirs(dir_path)
-            with open(file_dire + '.json', 'w', encoding='utf16') as f:
-                json.dump(lists[func], f, indent=4, ensure_ascii=False)
-
-        with open('name.json', 'w', encoding='utf16') as f:
-            json.dump(name_dict, f, indent=4, ensure_ascii=False)
 
     # 传入提取出的数据，返回para翻译后的数据
     def to_rawtrans(self, raw_data: dict):
