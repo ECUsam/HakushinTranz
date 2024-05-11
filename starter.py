@@ -23,9 +23,9 @@ class translator:
         utils.encode.encode_changer(self.pathManager.scriptPath).change_all()
         print("编码转换完成，目标编码：utf-16")
 
-    def change_name(self):
+    def change_name(self, para_update_mode = False):
         print("--修改数据文件名中")
-        chan = utils.fileNameChange(self.pathManager.dataFolder)
+        chan = utils.fileNameChange(self.pathManager.dataFolder, para_update_mode=para_update_mode)
         chan.run()
         print("修改数据文件名完成，数据对于名称文件储存于："+chan.dataName)
 
@@ -90,6 +90,7 @@ class translator:
 
     def update_output_para_data(self):
         self.encode_change()
+        self.change_name(True)
         self.fileFormat()
         self.getParaData()
         if Config.use_ai_translation:
@@ -100,4 +101,4 @@ class translator:
 
 if __name__ == "__main__":
     a = translator()
-    a.output_para_data()
+    a.update_output_para_data()

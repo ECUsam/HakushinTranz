@@ -13,12 +13,14 @@ def filenamer(input_str):
     valid_str = valid_str.replace(' ', '_')  # 将空格替换为下划线
     return valid_str
 
+
 def has_kana(text):
     kana_chars = [chr(i) for i in range(0x3040, 0x30FF + 1)]  # 平假名和片假名的 Unicode 编码范围
     for char in text:
         if char in kana_chars:
             return True
     return False
+
 
 def has_2_kana(text):
     kana_chars = [chr(i) for i in range(0x3040, 0x30FF + 1)]
@@ -30,9 +32,10 @@ def has_2_kana(text):
         return True
     return False
 
-
     # 生成网站用数据
-def json_to_para(raw_trans:dict):
+
+
+def json_to_para(raw_trans: dict):
     lists = {}
 
     for da in raw_trans:
@@ -90,14 +93,17 @@ class paratranz:
     def __init__(self, para_path):
         self.para_path = para_path
         self.para_data = None
+
     """
     "[类别名称]"：{
         "context" : [原文列表],
         "trans" : [翻译列表]
     }
     """
+
     def para_to_json_one(self, filepath: str):
         res_dict = {}
+        print(filepath)
         with open(filepath, encoding='utf8') as f:
             para_data = json.load(f)
         for item in para_data:
@@ -124,7 +130,6 @@ class paratranz:
         self.para_data = raw_data
         return raw_data
 
-
     # 传入提取出的数据，返回para翻译后的数据
     def to_rawtrans(self, raw_data: dict):
         for event_key in raw_data:
@@ -134,7 +139,8 @@ class paratranz:
                 for context in raw_data[event_key]["context"]:
                     context_modified = context.replace('\n', '\\n')
                     if context_modified in self.para_data[event_key]["trans"]:
-                        raw_data[event_key]["trans"][context] = self.para_data[event_key]["trans"][context_modified].replace(
+                        raw_data[event_key]["trans"][context] = self.para_data[event_key]["trans"][
+                            context_modified].replace(
                             '\\n', '\n')
                     else:
                         raw_data[event_key]["trans"][context] = ""
