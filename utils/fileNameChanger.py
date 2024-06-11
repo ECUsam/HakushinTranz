@@ -20,14 +20,18 @@ class fileNameChange:
         numbers = 1
         for foldername, subfolders, filenames in os.walk(path):
             code = 1
+            # 优先处理已存在的文件
             for filename in filenames:
-                if filename.startswith(data+"_"):
-                    continue
                 if self.searchData(data, filename):
                     transname = self.searchData(data, filename)
                     filepath = os.path.join(foldername, filename)
                     newfilepath = os.path.join(foldername, transname)
                     os.rename(filepath, newfilepath)
+
+            for filename in filenames:
+                if filename.startswith(data+"_"):
+                    continue
+                if self.searchData(data, filename):
                     continue
                 if Config.use_baidu_trans or self.para_update_mode:
                     transname = data+ "_" + to_newname(filename)

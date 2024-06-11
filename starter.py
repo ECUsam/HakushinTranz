@@ -61,6 +61,12 @@ class translator:
         utils.copy_folder(Config.language_data_path, self.pathManager.scriptPath)
         print("移动完毕")
 
+    def unsafe_replace(self):
+        print("进行mod版替换")
+        trans_dic = utils.get_ket_trans_from_all(Config.paraPath)
+        utils.replace_all(self.pathManager.scriptPath, trans_dic)
+        print("替换完成")
+
     def run(self):
         self.encode_change()
         self.change_name()
@@ -74,6 +80,14 @@ class translator:
             self.data_dic = utils.data_update(ai_data, self.data_dic)
         self.replace()
         self.font_change()
+        self.just_replace()
+
+    def mod_translate(self):
+        self.encode_change()
+        self.change_name(False)
+        self.unsafe_replace()
+        self.font_change()
+
 
     def just_replace(self):
         self.data_dic = load_json(Config.dataJsonName)
@@ -101,4 +115,4 @@ class translator:
 
 if __name__ == "__main__":
     a = translator()
-    a.update_output_para_data()
+    a.mod_translate()

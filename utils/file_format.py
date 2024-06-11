@@ -62,7 +62,9 @@ class file_function_format:
         self.language = language
         if self.language == 'jp':
             self.parrtenja = re.compile(
-                "[０-９0-9a-z-A-Z]*[…―「（Ａ-Ｚ\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-んァ-ヴーｦ-ﾟ][^;()=,/]*[―\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-ゖァ-ヶｦ-ﾟあ-んア-ンぁ-んァ-ヴー—、。·）『』☆「」#…Ａ-Ｚ？！”“]|[…―「（Ａ-Ｚ\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-んァ-ヴーｦ-ﾟ]")
+                "[０-９0-9a-z-A-Z]*[…―「（Ａ-Ｚ\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-んァ-ヴーｦ-ﾟ]"
+                "[^;()=,/]*[―\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-ゖァ-ヶｦ-ﾟあ-んア-ンぁ-んァ-ヴー—、。·）『』☆「」#…Ａ-Ｚ？！”“]"
+                "|[…―「（Ａ-Ｚ\u3040-\u30FF\u30A0-\u30FF\u4E00-\u9FFFぁ-んァ-ヴーｦ-ﾟ]")
         self.function_list = ['event', 'class', 'unit', 'story', 'scenario', 'spot', 'detail', 'skill', 'race', 'power',
                               'movetype', 'voice', 'world', 'context', 'sound', 'attribute', 'workspace']
         self.dict = {}
@@ -72,7 +74,7 @@ class file_function_format:
         self.bgm_img_font_func = ['playBGM(', 'font(', 'bcg =', 'bcg=', 'bgm =', 'battle_bgm =', 'world_bgm =', 'bg(',
                                   'loopBGM(', 'begin_text']
         #"detail",
-        self.noNameClass = [ "sound", "context", "attribute", 'workspace']
+        self.noNameClass = ["attribute", 'workspace']
         self.res_dict = {}
         self.repath = ''
         self.filename = ''

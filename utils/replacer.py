@@ -7,7 +7,6 @@ from config import Config
 from file_format import file_function_format
 
 
-
 class replacer(file_function_format):
     def __init__(self, filepath: str, trans_data, name_dic=None):
         super().__init__(filepath)
@@ -19,11 +18,11 @@ class replacer(file_function_format):
         self.trans = trans_data
         self.DataNames = ['bgm', 'bg', 'image', 'face', 'picture', 'BGM', 'bcg']
 
-
     def str_dic_replace(self, data_name: str, string: str):
         sorted_keys = sorted(self.name_dic[data_name], key=len, reverse=True)
         for key in sorted_keys:
             value = self.name_dic[data_name][key]
+            key: str
             key = key.split(".")[0]
             value = value.split(".")[0]
             string = re.sub(re.escape(key), value, string)
@@ -83,7 +82,6 @@ class replacer(file_function_format):
 
 
 def all_replace(foler_path, trans_data):
-
     if os.path.exists(Config.dataName):
         with open(Config.dataName, "r", encoding="utf8") as f:
             name_dic = json.load(f)
@@ -92,7 +90,7 @@ def all_replace(foler_path, trans_data):
 
     for folder, sub_folders, files in os.walk(foler_path):
         for file in files:
-            print("\b"*100+"替换:" + file, end="")
+            print("\b" * 100 + "替换:" + file, end="")
             extension = os.path.splitext(file)[1]
             if extension != '.dat':
                 continue
@@ -100,6 +98,7 @@ def all_replace(foler_path, trans_data):
             n = replacer(filepath, trans_data, name_dic)
             n.get_func_list()
             n.Run()
+
 
 if __name__ == "__main__":
     with open("../data_ai.json", "r", encoding="utf-8") as f:

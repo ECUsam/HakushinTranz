@@ -1,8 +1,8 @@
 class Config:
     # 游戏文件夹
-    gamePath = r"E:\download\新約迫真戦記―ほのぼの神話ver0.57 豪華版"
+    gamePath = r"E:\download\最终boss雇佣 对应ver0.57"
     # paratranz 下载下来的翻译文件夹，在哪层目录无所谓
-    paraPath = r"E:\download\2024_05_11_11_02_15_8b9bed\utf8\script"
+    paraPath = r"E:\download\2024_05_14_17_02_21_37c9f7\utf8\script"
     # 存 文件命名 对应的json
     dataName = "dataChangeName.json"
     # 存翻译数据的文件

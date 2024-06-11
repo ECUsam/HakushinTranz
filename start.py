@@ -16,6 +16,8 @@ def main():
         a.output_para_data()
     elif args.mode == 'updateParaData':
         a.update_output_para_data()
+    elif args.mode == 'mod_trans':
+        a.mod_translate()
     elif args.mode is None:
         a.run()
     else:

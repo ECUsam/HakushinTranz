@@ -14,3 +14,4 @@ from replacer import replacer
 from replacer import all_replace
 from preText import *
 from font import *
+from unsafe_trans import get_ket_trans_from_all, replace_all

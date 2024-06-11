@@ -77,7 +77,6 @@ def json_to_para(raw_trans: dict):
         else:
             filename_new = name_dict[filename_base]
 
-        print(filename_new)
         file_dire = file_dire.replace(filename_base, filename_new)
 
         if not os.path.exists(dir_path):
@@ -103,7 +102,6 @@ class paratranz:
 
     def para_to_json_one(self, filepath: str):
         res_dict = {}
-        print(filepath)
         with open(filepath, encoding='utf8') as f:
             para_data = json.load(f)
         for item in para_data:
